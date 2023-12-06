@@ -2,9 +2,9 @@
 #include <SFML/System/Vector2.hpp>
 #include <iostream>
 
-#define PIXEL_SIZE 15
-#define SCREEN_SIZE 40
-#define TICK_RESET 48
+#define PIXEL_SIZE 20
+#define SCREEN_SIZE 50
+#define TICK_RESET 120
 
 int main()
 {
@@ -57,22 +57,25 @@ int main()
             }
         }
 
-        // Clear the window and draw everything
-        window.clear();
-        for (int i = 0; i < SCREEN_SIZE; ++i)
+        // Clear the window and draw everything over
+        if (tick == 0)
         {
-            for (int j = 0; j < SCREEN_SIZE; ++j)
+            window.clear();
+            for (int i = 0; i < SCREEN_SIZE; ++i)
             {
-                if (data[i][j])
+                for (int j = 0; j < SCREEN_SIZE; ++j)
                 {
-                    sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
-                    shape.setFillColor(sf::Color(77, 26, 30));
-                    shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
-                    window.draw(shape);
+                    if (data[i][j])
+                    {
+                        sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
+                        shape.setFillColor(sf::Color(77, 26, 30));
+                        shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
+                        window.draw(shape);
+                    }
                 }
             }
+            window.display();
         }
-        window.display();
     }
 
     return 0;
