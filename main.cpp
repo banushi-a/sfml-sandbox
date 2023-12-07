@@ -1,5 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Vector2.hpp>
+#include "eventHandlers.h"
+#include "physicsHandlers.h"
 #include <iostream>
 
 #define PIXEL_SIZE 20
@@ -12,7 +14,12 @@ int main()
         sf::VideoMode(PIXEL_SIZE * SCREEN_SIZE, PIXEL_SIZE * SCREEN_SIZE),
         "Sandbox Test");
 
-    int data[SCREEN_SIZE][SCREEN_SIZE] = {};
+    // Dynamic allocation of a 2D array (matrix)
+    int **data = new int *[SCREEN_SIZE];
+    for (int i = 0; i < SCREEN_SIZE; ++i)
+    {
+        data[i] = new int[SCREEN_SIZE];
+    }
 
     int tick = 0;
 
@@ -27,6 +34,7 @@ int main()
             // Quit the application if the window is closed
             if (event.type == sf::Event::Closed)
                 window.close();
+            handleEvents(event);
         }
 
         if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && tick == 0)
@@ -44,17 +52,7 @@ int main()
         // Make the bricks "fall"
         if (tick == 0)
         {
-            for (int i = SCREEN_SIZE; i > 0; --i)
-            {
-                for (int j = 0; j < SCREEN_SIZE; ++j)
-                {
-                    if (data[i][j] == 0 and data[i - 1][j] == 1)
-                    {
-                        data[i][j] = 1;
-                        data[i - 1][j] = 0;
-                    }
-                }
-            }
+            updateData(data, SCREEN_SIZE);
         }
 
         // Clear the window and draw everything over
