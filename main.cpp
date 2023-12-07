@@ -2,11 +2,15 @@
 #include <SFML/System/Vector2.hpp>
 #include "eventHandlers.h"
 #include "physicsHandlers.h"
+#include "material.h"
 #include <iostream>
 
+// Size of "blocks" in pixels
 #define PIXEL_SIZE 20
+// Number of pixels
 #define SCREEN_SIZE 50
-#define TICK_RESET 120
+// Throttles how fast things happen
+#define TICK_RESET 240
 
 int main()
 {
@@ -15,11 +19,13 @@ int main()
         "Sandbox Test");
 
     // Dynamic allocation of a 2D array (matrix)
-    int **data = new int *[SCREEN_SIZE];
+    Material **data = new Material *[SCREEN_SIZE];
     for (int i = 0; i < SCREEN_SIZE; ++i)
     {
-        data[i] = new int[SCREEN_SIZE];
+        data[i] = new Material[SCREEN_SIZE];
     }
+
+    Material material = BRICK;
 
     int tick = 0;
 
@@ -33,8 +39,17 @@ int main()
         {
             // Quit the application if the window is closed
             if (event.type == sf::Event::Closed)
+            {
+                // Deallocate memory for the data matrix
+                for (int i = 0; i < SCREEN_SIZE; ++i)
+                {
+                    delete[] data[i];
+                }
+                delete[] data;
                 window.close();
-            handleEvents(event);
+            }
+
+            handleEvents(event, &material);
         }
 
         if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && tick == 0)
@@ -46,7 +61,17 @@ int main()
             int row = ((int)mousePosition.y) / PIXEL_SIZE;
             int col = ((int)mousePosition.x) / PIXEL_SIZE;
 
-            data[row][col] = (data[row][col] + 1) % 2;
+            if (row < 0 or row >= SCREEN_SIZE or col < 0 or col >= SCREEN_SIZE)
+                continue;
+
+            if (data[row][col] == material)
+            {
+                data[row][col] = AIR;
+            }
+            else
+            {
+                data[row][col] = material;
+            }
         }
 
         // Make the bricks "fall"
@@ -63,10 +88,17 @@ int main()
             {
                 for (int j = 0; j < SCREEN_SIZE; ++j)
                 {
-                    if (data[i][j])
+                    if (data[i][j] == BRICK)
                     {
                         sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
                         shape.setFillColor(sf::Color(77, 26, 30));
+                        shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
+                        window.draw(shape);
+                    }
+                    else if (data[i][j] == SAND)
+                    {
+                        sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
+                        shape.setFillColor(sf::Color(232, 181, 114));
                         shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
                         window.draw(shape);
                     }
@@ -75,6 +107,5 @@ int main()
             window.display();
         }
     }
-
     return 0;
 }

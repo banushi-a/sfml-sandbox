@@ -1,6 +1,8 @@
 #ifndef PHYSICS_HANDLERS
 #define PHYSICS_HANDLERS
 
-void updateData(int **data, int screenSize);
+#include "material.h"
+
+void updateData(Material **data, int screenSize);
 
 #endif
