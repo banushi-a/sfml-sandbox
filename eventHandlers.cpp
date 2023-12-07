@@ -4,12 +4,23 @@
 
 void handleEvents(sf::Event event, Material *material)
 {
-    if (event.type == sf::Event::KeyReleased and event.key.code == sf::Keyboard::S)
+    // If a key was presssed
+    if (event.type == sf::Event::KeyReleased)
     {
-        *material = SAND;
-    }
-    else if (event.type == sf::Event::KeyReleased and event.key.code == sf::Keyboard::B)
-    {
-        *material = BRICK;
+        // Change the material accordingly
+        switch (event.key.code)
+        {
+        case sf::Keyboard::S:
+            *material = SAND;
+            break;
+        case sf::Keyboard::B:
+            *material = BRICK;
+            break;
+        case sf::Keyboard::W:
+            *material = WATER;
+            break;
+        default:
+            break;
+        }
     }
 }

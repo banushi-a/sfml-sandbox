@@ -64,14 +64,7 @@ int main()
             if (row < 0 or row >= SCREEN_SIZE or col < 0 or col >= SCREEN_SIZE)
                 continue;
 
-            if (data[row][col] == material)
-            {
-                data[row][col] = AIR;
-            }
-            else
-            {
-                data[row][col] = material;
-            }
+            data[row][col] = material;
         }
 
         // Make the bricks "fall"
@@ -99,6 +92,13 @@ int main()
                     {
                         sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
                         shape.setFillColor(sf::Color(232, 181, 114));
+                        shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
+                        window.draw(shape);
+                    }
+                    else if (data[i][j] == WATER)
+                    {
+                        sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
+                        shape.setFillColor(sf::Color(30, 192, 232));
                         shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
                         window.draw(shape);
                     }
