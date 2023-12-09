@@ -6,9 +6,9 @@
 #include <iostream>
 
 // Size of "blocks" in pixels
-#define PIXEL_SIZE 20
+#define PIXEL_SIZE 10
 // Number of pixels
-#define SCREEN_SIZE 50
+#define SCREEN_SIZE 100
 // Throttles how fast things happen
 #define TICK_RESET 240
 
