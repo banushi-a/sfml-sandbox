@@ -44,48 +44,26 @@ void handleSandAroundAir(Material **data, int screenSize, int i, int j)
 
 void handleWaterCell(Material **data, int screenSize, int i, int j)
 {
-    // // If there is a row below us and if there is air below the water
-    // if (i < screenSize - 1 && data[i + 1][j] == AIR)
-    // {
-    //     // Drop the water
-    //     data[i + 1][j] = WATER;
-    //     data[i][j] = AIR;
-    // }
 
-    // // If there is a row to the left of us and if there is air to the right of the water
-    // else if (j > 0 && data[i][j - 1] == AIR)
-    // {
-    //     // Move the water right
-    //     data[i][j - 1] = WATER;
-    //     data[i][j] = AIR;
-    // }
-
-    // // If there is a row to the right of us and
-    // else if (j < screenSize - 1 && data[i][j + 1] == AIR)
-    // {
-    //     data[i][j + 1] = WATER;
-    //     data[i][j] = AIR;
-    // }
-
-    if (i >= screenSize - 1)
+    // If there is a row to the right of us and it is air
+    if (j < screenSize - 1 && data[i][j + 1] == AIR)
     {
-        return;
-    }
-
-    if (j > 0 && data[i + 1][j - 1] == AIR)
-    {
-        data[i + 1][j - 1] = WATER;
+        data[i][j + 1] = WATER;
         data[i][j] = AIR;
     }
-
-    if (data[i + 1][j] == AIR)
+    // If there is a row to the left of us and if there is air to the right of the water
+    else if (j > 0 && data[i][j - 1] == AIR)
     {
+        // Move the water right
+        data[i][j - 1] = WATER;
+        data[i][j] = AIR;
+    }
+    // If there is a row below us and if there is air below the water
+
+    if (i < screenSize - 1 && data[i + 1][j] == AIR)
+    {
+        // Drop the water
         data[i + 1][j] = WATER;
-        data[i][j] = AIR;
-    }
-    if (j < screenSize - 1 && data[i + 1][j + 1] == AIR)
-    {
-        data[i + 1][j + 1] = WATER;
         data[i][j] = AIR;
     }
 }
