@@ -1,16 +1,20 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Vector2.hpp>
+
 #include "eventHandlers.h"
 #include "physicsHandlers.h"
 #include "material.h"
+
 #include <iostream>
+#include <string>
+#include <sstream>
 
 // Size of "blocks" in pixels
 #define PIXEL_SIZE 10
 // Number of pixels
 #define SCREEN_SIZE 100
 // Throttles how fast things happen
-#define TICK_RESET 240
+#define TICK_RESET 256
 
 int main()
 {
@@ -19,10 +23,10 @@ int main()
         "Sandbox Test");
 
     // Dynamic allocation of a 2D array (matrix)
-    Material **data = new Material *[SCREEN_SIZE];
+    Cell **data = new Cell *[SCREEN_SIZE];
     for (int i = 0; i < SCREEN_SIZE; ++i)
     {
-        data[i] = new Material[SCREEN_SIZE];
+        data[i] = new Cell[SCREEN_SIZE];
     }
 
     Material material = BRICK;
@@ -64,7 +68,10 @@ int main()
             if (row < 0 or row >= SCREEN_SIZE or col < 0 or col >= SCREEN_SIZE)
                 continue;
 
-            data[row][col] = material;
+            data[row][col].material = material;
+
+            if (material == WATER)
+                data[row][col].fluid_level = 9;
         }
 
         // Make the bricks "fall"
@@ -81,25 +88,29 @@ int main()
             {
                 for (int j = 0; j < SCREEN_SIZE; ++j)
                 {
-                    if (data[i][j] == BRICK)
+                    if (data[i][j].material == BRICK)
                     {
                         sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
                         shape.setFillColor(sf::Color(77, 26, 30));
                         shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
                         window.draw(shape);
                     }
-                    else if (data[i][j] == SAND)
+                    else if (data[i][j].material == SAND)
                     {
                         sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
                         shape.setFillColor(sf::Color(232, 181, 114));
                         shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
                         window.draw(shape);
                     }
-                    else if (data[i][j] == WATER)
+                    else if (data[i][j].material == WATER)
                     {
+                        // Fluid height function be Fh(x) where x is a fluid level [0, 9]
+                        // Fh(9) = 1, Fh(0) = 0, Fh(x) = (1/9)x
+                        double fluidHeightScaler = (1 / 9) * data[i][j].fluid_level;
                         sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
                         shape.setFillColor(sf::Color(30, 192, 232));
                         shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
+
                         window.draw(shape);
                     }
                 }
