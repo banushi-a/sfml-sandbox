@@ -53,7 +53,7 @@ int main()
                 window.close();
             }
 
-            handleEvents(event, &material);
+            handleEvents(event, &material, data, SCREEN_SIZE);
         }
 
         if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && tick == 0)

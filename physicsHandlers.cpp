@@ -2,17 +2,6 @@
 #include "material.h"
 #include <cmath>
 
-void handleBricksAroundAir(Cell **data, int screenSize, int i, int j)
-{
-    // If the brick is above us is
-    if (i > 0 && data[i - 1][j].material == BRICK)
-    {
-        // Let the brick "fall", i.e. swap the air and brick
-        data[i][j].material = BRICK;
-        data[i - 1][j].material = AIR;
-    }
-}
-
 void handleSandAroundAir(Cell **data, int screenSize, int i, int j)
 {
     // If there is a row above us
@@ -76,6 +65,17 @@ void handleWaterCell(Cell **data, int screenSize, int i, int j)
     }
 }
 
+void handleBrickCell(Cell **data, int screenSize, int i, int j)
+{
+    // If the brick is above us is
+    if (i < screenSize - 1 && (data[i + 1][j].material == AIR || data[i + 1][j].material == WATER))
+    {
+        // Let the brick "fall", i.e. swap the air and brick
+        data[i][j].material = data[i + 1][j].material;
+        data[i + 1][j].material = BRICK;
+    }
+}
+
 void updateData(Cell **data, int screenSize)
 {
     // We iterate through the rows bottom up, stopping at the second row
@@ -87,13 +87,16 @@ void updateData(Cell **data, int screenSize)
             // If the cell we are looking at is air
             if (data[i][j].material == AIR)
             {
-                handleBricksAroundAir(data, screenSize, i, j);
                 handleSandAroundAir(data, screenSize, i, j);
             }
             // If the cell we are looking at is water
             if (data[i][j].material == WATER)
             {
                 handleWaterCell(data, screenSize, i, j);
+            }
+            else if (data[i][j].material == BRICK)
+            {
+                handleBrickCell(data, screenSize, i, j);
             }
         }
     }
