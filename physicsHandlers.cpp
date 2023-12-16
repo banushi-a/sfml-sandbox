@@ -2,6 +2,11 @@
 #include "material.h"
 #include <cmath>
 
+bool isFluid(Material material)
+{
+    return material == WATER || material == GAS;
+}
+
 void handleFluid(Cell **data, int screenSize, int i, int j, Material fluid)
 {
     // If there is a row below us and if there is air below the fluid
@@ -47,7 +52,7 @@ void handleGasCell(Cell **data, int screenSize, int i, int j)
 void handleBrickCell(Cell **data, int screenSize, int i, int j)
 {
     // If their is air or water below us
-    if (i < screenSize - 1 && (data[i + 1][j].material == AIR || data[i + 1][j].material == WATER))
+    if (i < screenSize - 1 && (data[i + 1][j].material == AIR || isFluid(data[i + 1][j].material)))
     {
         // Let the brick "fall", i.e. swap the air and brick
         data[i][j].material = data[i + 1][j].material;
@@ -61,26 +66,26 @@ void handleSandCell(Cell **data, int screenSize, int i, int j)
     if (i < screenSize - 1)
     {
         // If the sand is above air
-        if (data[i + 1][j].material == AIR)
+        if (data[i + 1][j].material == AIR || isFluid(data[i + 1][j].material))
         {
-            data[i][j].material = AIR;
+            data[i][j].material = data[i + 1][j].material;
             data[i + 1][j].material = SAND;
         }
         // If there is air to the right and down of us
         else if (j < screenSize - 1 &&
-                 data[i + 1][j + 1].material == AIR &&
+                 (data[i + 1][j + 1].material == AIR || isFluid(data[i + 1][j + 1].material)) &&
                  data[i + 1][j].material != AIR)
         {
+            data[i][j].material = data[i + 1][j + 1].material;
             data[i + 1][j + 1].material = SAND;
-            data[i][j].material = AIR;
         }
         // If there is air to the left and down of us
         else if (j > 0 &&
-                 data[i + 1][j - 1].material == AIR &&
+                 (data[i + 1][j - 1].material == AIR || isFluid(data[i + 1][j - 1].material)) &&
                  data[i + 1][j].material != AIR)
         {
+            data[i][j].material = data[i + 1][j - 1].material;
             data[i + 1][j - 1].material = SAND;
-            data[i][j].material = AIR;
         }
     }
 }
