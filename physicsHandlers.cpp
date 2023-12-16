@@ -2,14 +2,13 @@
 #include "material.h"
 #include <cmath>
 
-void handleWaterCell(Cell **data, int screenSize, int i, int j)
+void handleFluid(Cell **data, int screenSize, int i, int j, Material fluid)
 {
-
-    // If there is a row below us and if there is air below the water
+    // If there is a row below us and if there is air below the fluid
     if (i < screenSize - 1 && data[i + 1][j].material == AIR)
     {
         // Drop the water
-        data[i + 1][j].material = WATER;
+        data[i + 1][j].material = fluid;
         data[i + 1][j].fluid_level = 9;
 
         data[i][j].material = AIR;
@@ -18,8 +17,8 @@ void handleWaterCell(Cell **data, int screenSize, int i, int j)
     // If there is a row to the right of us and it is air
     else if (j < screenSize - 1 && data[i][j + 1].material == AIR)
     {
-        // Move the water right
-        data[i][j + 1].material = WATER;
+        // Move the fluid right
+        data[i][j + 1].material = fluid;
         data[i][j + 1].fluid_level = (int)(data[i][j].fluid_level / 2);
         data[i][j].material = AIR;
         data[i][j].fluid_level = (int)std::ceil(data[i][j].fluid_level / 2);
@@ -27,12 +26,22 @@ void handleWaterCell(Cell **data, int screenSize, int i, int j)
     // If there is a row to the left of us
     else if (j > 0 && data[i][j - 1].material == AIR)
     {
-        // Move the water left
-        data[i][j - 1].material = WATER;
+        // Move the fluid left
+        data[i][j - 1].material = fluid;
         data[i][j - 1].fluid_level = (int)(data[i][j].fluid_level / 2);
         data[i][j].material = AIR;
         data[i][j].fluid_level = (int)std::ceil(data[i][j].fluid_level / 2);
     }
+}
+
+void handleWaterCell(Cell **data, int screenSize, int i, int j)
+{
+    handleFluid(data, screenSize, i, j, WATER);
+}
+
+void handleGasCell(Cell **data, int screenSize, int i, int j)
+{
+    handleFluid(data, screenSize, i, j, GAS);
 }
 
 void handleBrickCell(Cell **data, int screenSize, int i, int j)
@@ -88,6 +97,10 @@ void updateData(Cell **data, int screenSize)
             if (data[i][j].material == WATER)
             {
                 handleWaterCell(data, screenSize, i, j);
+            }
+            else if (data[i][j].material == GAS)
+            {
+                handleGasCell(data, screenSize, i, j);
             }
             else if (data[i][j].material == BRICK)
             {

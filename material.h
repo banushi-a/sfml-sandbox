@@ -8,6 +8,7 @@ enum Material
     BRICK, // 1
     SAND,  // 2
     WATER, // 3
+    GAS,   // 4
 };
 
 // Define the type a cell can be

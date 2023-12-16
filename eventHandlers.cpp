@@ -19,6 +19,9 @@ void handleEvents(sf::Event event, Material *material, Cell **data, int SCREEN_S
         case sf::Keyboard::W:
             *material = WATER;
             break;
+        case sf::Keyboard::G:
+            *material = GAS;
+            break;
         case sf::Keyboard::R:
             for (int i = 0; i < SCREEN_SIZE; ++i)
             {

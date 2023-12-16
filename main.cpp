@@ -113,6 +113,17 @@ int main()
 
                         window.draw(shape);
                     }
+                    else if (data[i][j].material == GAS)
+                    {
+                        // Fluid height function be Fh(x) where x is a fluid level [0, 9]
+                        // Fh(9) = 1, Fh(0) = 0, Fh(x) = (1/9)x
+                        double fluidHeightScaler = (1 / 9) * data[i][j].fluid_level;
+                        sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
+                        shape.setFillColor(sf::Color(89, 89, 89));
+                        shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
+
+                        window.draw(shape);
+                    }
                 }
             }
             window.display();
