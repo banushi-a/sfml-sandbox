@@ -11,6 +11,7 @@ Left click and hold to place materials. Using the keyboard, press:
 - (b) to switch to bricks
 - (s) to switch to sand
 - (w) to switch to water
+- (g) to switch to gas
 - (r) to remove everything from the screen
 
 ## Latest Update
