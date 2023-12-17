@@ -8,16 +8,31 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <random>
+#include <chrono>
 
 // Size of "blocks" in pixels
-#define PIXEL_SIZE 10
+#define PIXEL_SIZE 5
 // Number of pixels
-#define SCREEN_SIZE 100
+#define SCREEN_SIZE 200
 // Throttles how fast things happen
 #define TICK_RESET 256
 
+bool inBounds(int r, int c)
+{
+    return r >= 0 && c >= 0 && r < SCREEN_SIZE - 1 || c < SCREEN_SIZE - 1;
+}
+
 int main()
 {
+    // Use the current time as a seed for the random number generator
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::default_random_engine generator(seed);
+
+    // Define the distribution for floating-point numbers between 0 and 1
+    std::uniform_real_distribution<double> distribution(0.0, 1.0);
+
+    // Make the window
     sf::RenderWindow window(
         sf::VideoMode(PIXEL_SIZE * SCREEN_SIZE, PIXEL_SIZE * SCREEN_SIZE),
         "Sandbox Test");
@@ -68,10 +83,19 @@ int main()
             if (row < 0 or row >= SCREEN_SIZE or col < 0 or col >= SCREEN_SIZE)
                 continue;
 
-            data[row][col].material = material;
-
-            if (material == WATER)
-                data[row][col].fluid_level = 9;
+            // Spawn the material randomly in a 3x3 area surrounding the cursor
+            for (int i = row - 1; i <= row + 1; ++i)
+            {
+                for (int j = col - 1; j <= col + 1; ++j)
+                {
+                    if (inBounds(i, j) && distribution(generator) > 0.7)
+                    {
+                        data[i][j].material = material;
+                        if (material == WATER || material == GAS || material == FIRE)
+                            data[i][j].fluid_level = 9;
+                    }
+                }
+            }
         }
 
         // Make the bricks "fall"
@@ -120,6 +144,14 @@ int main()
                         double fluidHeightScaler = (1 / 9) * data[i][j].fluid_level;
                         sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
                         shape.setFillColor(sf::Color(89, 89, 89));
+                        shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
+
+                        window.draw(shape);
+                    }
+                    else if (data[i][j].material == FIRE)
+                    {
+                        sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
+                        shape.setFillColor(sf::Color(163, 33, 33));
                         shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
 
                         window.draw(shape);

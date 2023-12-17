@@ -115,6 +115,18 @@ void updateData(Cell **data, int screenSize)
             {
                 handleSandCell(data, screenSize, i, j);
             }
+            else if (data[i][j].material == FIRE)
+            {
+                if (data[i][j].fluid_level == 0)
+                {
+
+                    data[i][j].material = AIR;
+                }
+                else
+                {
+                    --data[i][j].fluid_level;
+                }
+            }
         }
     }
 }
