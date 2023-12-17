@@ -12,13 +12,16 @@ Left click and hold to place materials. Using the keyboard, press:
 - (s) to switch to sand
 - (w) to switch to water
 - (g) to switch to gas
+- (f) to switch to fire
 - (r) to remove everything from the screen
 
 ## Latest Update
 
-- 12/16/2023 I have some basic fluid simulation working. The bricks now sink to the bottom of water. Future TODO is to abstract fluid type so that bricks sink to the bottom of any fluid.
+- 12/17/2023 The spawning has been reworked. It now works by checking a 3x3 area surrounding the cursor and using random numbers to determine when to spawn materials. Pressing f lets the user spawn fire. The goal is to make this ignite with gas in the future.
 
 ## Old Updates
+
+- 12/16/2023 I have some basic fluid simulation working. The bricks now sink to the bottom of water. Future TODO is to abstract fluid type so that bricks sink to the bottom of any fluid.
 
 - 12/07/2023 I want to refine the water physics. Maybe we can use some graph algorithm such as DFS or BFS. I would also like to work on adding density to materials. For example, dense materials such as bricks and sand sink below water. Maybe we can explore this / implement based on the ordering of the enum.
 
