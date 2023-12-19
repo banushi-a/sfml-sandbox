@@ -51,8 +51,16 @@ void handleGasCell(Cell **data, int screenSize, int i, int j)
 
 void handleBrickCell(Cell **data, int screenSize, int i, int j)
 {
-    // If their is air or water below us
-    if (i < screenSize - 1 && (data[i + 1][j].material == AIR || isFluid(data[i + 1][j].material)))
+    // If their is fluid below us
+    if (i < screenSize - 1 && isFluid(data[i + 1][j].material))
+    {
+        // Let the brick "fall", i.e. swap the air and brick
+        data[i][j].material = data[i + 1][j].material;
+        data[i][j].fluid_level = data[i + 1][j].fluid_level;
+        data[i + 1][j].material = BRICK;
+        data[i + 1][j].fluid_level = 0;
+    }
+    else if (i < screenSize - 1 && data[i + 1][j].material == AIR)
     {
         // Let the brick "fall", i.e. swap the air and brick
         data[i][j].material = data[i + 1][j].material;

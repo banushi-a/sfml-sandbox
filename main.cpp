@@ -20,7 +20,7 @@
 
 bool inBounds(int r, int c)
 {
-    return r >= 0 && c >= 0 && r < SCREEN_SIZE - 1 || c < SCREEN_SIZE - 1;
+    return r >= 0 && c >= 0 && r < SCREEN_SIZE - 1 && c < SCREEN_SIZE - 1;
 }
 
 int main()
