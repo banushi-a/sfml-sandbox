@@ -15,11 +15,17 @@ Left click and hold to place materials. Using the keyboard, press:
 - (f) to switch to fire
 - (r) to remove everything from the screen
 
-## Latest Update
+You can add materials in an n x n area for n in { 1, 3, 5, 7, 9 } by pressing the corresponding number. By default materials spawn in a 3x3 area.
+
+## Change Log
+
+### Latest Update
+
+- 12/17/2023 The spawning has been reworked, again. You now can spawn in nxn for n in { 1, 3, 5, 7, 9 }.
+
+### Old Updates
 
 - 12/17/2023 The spawning has been reworked. It now works by checking a 3x3 area surrounding the cursor and using random numbers to determine when to spawn materials. Pressing f lets the user spawn fire. The goal is to make this ignite with gas in the future.
-
-## Old Updates
 
 - 12/16/2023 I have some basic fluid simulation working. The bricks now sink to the bottom of water. Future TODO is to abstract fluid type so that bricks sink to the bottom of any fluid.
 
