@@ -45,6 +45,7 @@ int main()
     }
 
     Material material = BRICK;
+    int spawnSize = 3;
 
     int tick = 0;
 
@@ -68,7 +69,7 @@ int main()
                 window.close();
             }
 
-            handleEvents(event, &material, data, SCREEN_SIZE);
+            handleEvents(event, &material, &spawnSize, data, SCREEN_SIZE);
         }
 
         if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && tick == 0)
@@ -84,9 +85,9 @@ int main()
                 continue;
 
             // Spawn the material randomly in a 3x3 area surrounding the cursor
-            for (int i = row - 1; i <= row + 1; ++i)
+            for (int i = row - spawnSize + 2; i <= row + (spawnSize - 2); ++i)
             {
-                for (int j = col - 1; j <= col + 1; ++j)
+                for (int j = col - spawnSize + 2; j <= col + (spawnSize - 2); ++j)
                 {
                     if (inBounds(i, j) && distribution(generator) > 0.7)
                     {

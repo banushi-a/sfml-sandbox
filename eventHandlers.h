@@ -4,6 +4,6 @@
 #include <SFML/Graphics.hpp>
 #include "material.h"
 
-void handleEvents(sf::Event event, Material *material, Cell **data, int SCREEN_SIZE);
+void handleEvents(sf::Event event, Material *material, int *spawnSize, Cell **data, int SCREEN_SIZE);
 
 #endif

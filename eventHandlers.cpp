@@ -2,7 +2,7 @@
 #include "material.h"
 #include <iostream>
 
-void handleEvents(sf::Event event, Material *material, Cell **data, int SCREEN_SIZE)
+void handleEvents(sf::Event event, Material *material, int *spawnSize, Cell **data, int SCREEN_SIZE)
 {
     // If a key was presssed
     if (event.type == sf::Event::KeyReleased)
@@ -31,6 +31,21 @@ void handleEvents(sf::Event event, Material *material, Cell **data, int SCREEN_S
                 delete[] data[i];
                 data[i] = new Cell[SCREEN_SIZE];
             }
+            break;
+        case sf::Keyboard::Num1:
+            *spawnSize = 2;
+            break;
+        case sf::Keyboard::Num3:
+            *spawnSize = 3;
+            break;
+        case sf::Keyboard::Num5:
+            *spawnSize = 5;
+            break;
+        case sf::Keyboard::Num7:
+            *spawnSize = 7;
+            break;
+        case sf::Keyboard::Num9:
+            *spawnSize = 9;
             break;
         default:
             break;
