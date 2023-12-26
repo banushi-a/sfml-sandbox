@@ -21,7 +21,7 @@ You can add materials in an n x n area for n in { 1, 3, 5, 7, 9 } by pressing th
 
 ### Latest Update
 
-- 12/17/2023 The spawning has been reworked, again. You now can spawn in nxn for n in { 1, 3, 5, 7, 9 }.
+- 12/17/2023 The spawning has been reworked, again. You now can spawn in nxn for n in { 1, 3, 5, 7, 9 }. With larger spawn areas, we encounter performance issues. I would like to investigate routes we can take to optimize the computations.
 
 ### Old Updates
 
