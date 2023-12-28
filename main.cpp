@@ -89,7 +89,7 @@ int main()
             {
                 for (int j = col - spawnSize + 2; j <= col + (spawnSize - 2); ++j)
                 {
-                    if (inBounds(i, j) && distribution(generator) > 0.7)
+                    if (inBounds(i, j) && data[i][j].material == AIR && distribution(generator) > 0.7)
                     {
                         data[i][j].material = material;
                         if (material == WATER || material == GAS || material == FIRE)
