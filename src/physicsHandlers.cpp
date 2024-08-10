@@ -1,5 +1,5 @@
-#include "physicsHandlers.h"
-#include "material.h"
+#include "physicsHandlers.hpp"
+#include "material.hpp"
 #include <cmath>
 #include <random>
 #include <chrono>

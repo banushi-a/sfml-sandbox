@@ -1,9 +1,9 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Vector2.hpp>
 
-#include "eventHandlers.h"
-#include "physicsHandlers.h"
-#include "material.h"
+#include "eventHandlers.hpp"
+#include "physicsHandlers.hpp"
+#include "material.hpp"
 
 #include <iostream>
 #include <string>

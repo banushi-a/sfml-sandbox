@@ -1,5 +1,5 @@
-#include "eventHandlers.h"
-#include "material.h"
+#include "eventHandlers.hpp"
+#include "material.hpp"
 #include <iostream>
 
 void handleEvents(sf::Event event, Material *material, int *spawnSize, Cell **data, int SCREEN_SIZE)
