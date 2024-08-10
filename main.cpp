@@ -84,7 +84,7 @@ int main()
             if (row < 0 or row >= SCREEN_SIZE or col < 0 or col >= SCREEN_SIZE)
                 continue;
 
-            // Spawn the material randomly in a 3x3 area surrounding the cursor
+            // Spawn the material randomly in a surrounding area
             for (int i = row - spawnSize + 2; i <= row + (spawnSize - 2); ++i)
             {
                 for (int j = col - spawnSize + 2; j <= col + (spawnSize - 2); ++j)

@@ -98,6 +98,60 @@ void handleSandCell(Cell **data, int screenSize, int i, int j)
     }
 }
 
+void handleFireCell(Cell **data, int screenSize, int i, int j)
+{
+    // Remove "energy" from the current fire cell
+    if (data[i][j].fluid_level == 0)
+    {
+
+        data[i][j].material = AIR;
+    }
+    else
+    {
+        --data[i][j].fluid_level;
+    }
+
+    // If there is a row below us
+    if (i < screenSize - 1)
+    {
+        if (data[i + 1][j].material == GAS)
+        {
+            data[i + 1][j].material = FIRE;
+            data[i + 1][j].fluid_level = 9;
+        }
+    }
+
+    // If there is a row above us
+    if (i > 0)
+    {
+        if (data[i - 1][j].material == GAS)
+        {
+            data[i - 1][j].material = FIRE;
+            data[i - 1][j].fluid_level = 9;
+        }
+    }
+
+    // If there is a column before us
+    if (j > 0)
+    {
+        if (data[i][j - 1].material == GAS)
+        {
+            data[i][j - 1].material = FIRE;
+            data[i][j - 1].fluid_level = 9;
+        }
+    }
+
+    // If there is a column after us
+    if (j < screenSize - 1)
+    {
+        if (data[i][j + 1].material == GAS)
+        {
+            data[i][j + 1].material = FIRE;
+            data[i][j + 1].fluid_level = 9;
+        }
+    }
+}
+
 void updateData(Cell **data, int screenSize)
 {
     // We iterate through the rows bottom up, stopping at the second row
@@ -125,15 +179,7 @@ void updateData(Cell **data, int screenSize)
             }
             else if (data[i][j].material == FIRE)
             {
-                if (data[i][j].fluid_level == 0)
-                {
-
-                    data[i][j].material = AIR;
-                }
-                else
-                {
-                    --data[i][j].fluid_level;
-                }
+                handleFireCell(data, screenSize, i, j);
             }
         }
     }
