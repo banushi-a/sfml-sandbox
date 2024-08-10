@@ -41,9 +41,11 @@ https://www.sfml-dev.org/
 
 ### Latest Update
 
-- 12/17/2023 The spawning has been reworked, again. You now can spawn in nxn for n in { 1, 3, 5, 7, 9 }. With larger spawn areas, we encounter performance issues. I would like to investigate routes we can take to optimize the computations.
+- 08/09/2024 It's been a minute! Fire now interacts with gas
 
 ### Old Updates
+
+- 12/17/2023 The spawning has been reworked, again. You now can spawn in nxn for n in { 1, 3, 5, 7, 9 }. With larger spawn areas, we encounter performance issues. I would like to investigate routes we can take to optimize the computations.
 
 - 12/17/2023 The spawning has been reworked. It now works by checking a 3x3 area surrounding the cursor and using random numbers to determine when to spawn materials. Pressing f lets the user spawn fire. The goal is to make this ignite with gas in the future.
 
