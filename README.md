@@ -17,13 +17,35 @@ Left click and hold to place materials. Using the keyboard, press:
 
 You can add materials in an n x n area for n in { 1, 3, 5, 7, 9 } by pressing the corresponding number. By default materials spawn in a 3x3 area.
 
+## Building the Program
+
+1. Run brew info sfml
+
+My output is 
+```
+==> sfml: stable 2.6.1 (bottled), HEAD
+Multi-media library with bindings for multiple languages
+https://www.sfml-dev.org/
+/usr/local/Cellar/sfml/2.6.1 (812 files, 12.6MB) *
+```
+
+2. Locate the path, mine is /usr/local/Cellar/sfml/2.6.1
+
+3. Run the following command, replacing path with wherever your sfml is located
+
+`g++ -std=c++11 main.cpp eventHandlers.cpp physicsHandlers.cpp  -I[path]/include -o prog -L[path]/lib -lsfml-graphics -lsfml-window -lsfml-system`
+
+4. Run ./prog!
+
 ## Change Log
 
 ### Latest Update
 
-- 12/17/2023 The spawning has been reworked, again. You now can spawn in nxn for n in { 1, 3, 5, 7, 9 }. With larger spawn areas, we encounter performance issues. I would like to investigate routes we can take to optimize the computations.
+- 08/09/2024 It's been a minute! Fire now interacts with gas
 
 ### Old Updates
+
+- 12/17/2023 The spawning has been reworked, again. You now can spawn in nxn for n in { 1, 3, 5, 7, 9 }. With larger spawn areas, we encounter performance issues. I would like to investigate routes we can take to optimize the computations.
 
 - 12/17/2023 The spawning has been reworked. It now works by checking a 3x3 area surrounding the cursor and using random numbers to determine when to spawn materials. Pressing f lets the user spawn fire. The goal is to make this ignite with gas in the future.
 
