@@ -112,7 +112,6 @@ void handleFireCell(Cell **data, int screenSize, int i, int j)
     // Remove "energy" from the current fire cell
     if (data[i][j].fluid_level == 0)
     {
-
         data[i][j].material = AIR;
     }
     else
