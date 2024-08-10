@@ -17,6 +17,26 @@ Left click and hold to place materials. Using the keyboard, press:
 
 You can add materials in an n x n area for n in { 1, 3, 5, 7, 9 } by pressing the corresponding number. By default materials spawn in a 3x3 area.
 
+## Building the Program
+
+1. Run brew info sfml
+
+My output is 
+```
+==> sfml: stable 2.6.1 (bottled), HEAD
+Multi-media library with bindings for multiple languages
+https://www.sfml-dev.org/
+/usr/local/Cellar/sfml/2.6.1 (812 files, 12.6MB) *
+```
+
+2. Locate the path, mine is /usr/local/Cellar/sfml/2.6.1
+
+3. Run the following command, replacing path with wherever your sfml is located
+
+`g++ -std=c++11 main.cpp eventHandlers.cpp physicsHandlers.cpp  -I[path]/include -o prog -L[path]/lib -lsfml-graphics -lsfml-window -lsfml-system`
+
+4. Run ./prog!
+
 ## Change Log
 
 ### Latest Update
