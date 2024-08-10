@@ -32,10 +32,10 @@ https://www.sfml-dev.org/
 2. Locate the path, mine is /usr/local/Cellar/sfml/2.6.1
 
 3. Run the following command, replacing path with wherever your sfml is located
+   
+`g++ -std=c++17 ./src/*.cpp -I ./include/ -I[path]/include -o prog -L[path]/lib -lsfml-graphics -lsfml-window -lsfml-system`
 
-`g++ -std=c++11 main.cpp eventHandlers.cpp physicsHandlers.cpp  -I[path]/include -o prog -L[path]/lib -lsfml-graphics -lsfml-window -lsfml-system`
-
-4. Run ./prog!
+5. Run ./prog!
 
 ## Change Log
 
