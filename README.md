@@ -41,9 +41,13 @@ https://www.sfml-dev.org/
 
 ### Latest Update
 
-- 08/09/2024 It's been a minute! Fire now interacts with gas
-
+- 08/11/2024 Random number generation now follows the singleton design pattern in its own class, yay less overhead!
+  
 ### Old Updates
+
+- 08/10/2024 Reworked File Structure! Headers have been moved to ./include and source into.... well ./src
+
+- 08/09/2024 It's been a minute! Fire now interacts with gas
 
 - 12/17/2023 The spawning has been reworked, again. You now can spawn in nxn for n in { 1, 3, 5, 7, 9 }. With larger spawn areas, we encounter performance issues. I would like to investigate routes we can take to optimize the computations.
 
