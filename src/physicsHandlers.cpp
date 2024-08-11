@@ -1,8 +1,8 @@
 #include "physicsHandlers.hpp"
 #include "material.hpp"
+#include "RandomManager.hpp"
+
 #include <cmath>
-#include <random>
-#include <chrono>
 
 bool isFluid(Material material)
 {
@@ -102,13 +102,6 @@ void handleSandCell(Cell **data, int screenSize, int i, int j)
 
 void handleFireCell(Cell **data, int screenSize, int i, int j)
 {
-    // Use the current time as a seed for the random number generator
-    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-    std::default_random_engine generator(seed);
-
-    // Define the distribution for floating-point numbers between 0 and 1
-    std::uniform_real_distribution<double> distribution(0.0, 1.0);
-
     // Remove "energy" from the current fire cell
     if (data[i][j].fluid_level == 0)
     {
@@ -122,7 +115,7 @@ void handleFireCell(Cell **data, int screenSize, int i, int j)
     // If there is a row below us
     if (i < screenSize - 1)
     {
-        if (data[i + 1][j].material == GAS && distribution(generator) > 0.5)
+        if (data[i + 1][j].material == GAS && RandomManager::Instance().GetRandom() > 0.5)
         {
             data[i + 1][j].material = FIRE;
             data[i + 1][j].fluid_level = 9;
@@ -132,7 +125,7 @@ void handleFireCell(Cell **data, int screenSize, int i, int j)
     // If there is a row above us
     if (i > 0)
     {
-        if (data[i - 1][j].material == GAS && distribution(generator) > 0.5)
+        if (data[i - 1][j].material == GAS && RandomManager::Instance().GetRandom() > 0.5)
         {
             data[i - 1][j].material = FIRE;
             data[i - 1][j].fluid_level = 9;
@@ -142,7 +135,7 @@ void handleFireCell(Cell **data, int screenSize, int i, int j)
     // If there is a column before us
     if (j > 0)
     {
-        if (data[i][j - 1].material == GAS && distribution(generator) > 0.5)
+        if (data[i][j - 1].material == GAS && RandomManager::Instance().GetRandom() > 0.5)
         {
             data[i][j - 1].material = FIRE;
             data[i][j - 1].fluid_level = 9;
@@ -152,7 +145,7 @@ void handleFireCell(Cell **data, int screenSize, int i, int j)
     // If there is a column after us
     if (j < screenSize - 1)
     {
-        if (data[i][j + 1].material == GAS && distribution(generator) > 0.5)
+        if (data[i][j + 1].material == GAS && RandomManager::Instance().GetRandom() > 0.5)
         {
             data[i][j + 1].material = FIRE;
             data[i][j + 1].fluid_level = 9;
