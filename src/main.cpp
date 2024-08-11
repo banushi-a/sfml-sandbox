@@ -4,12 +4,11 @@
 #include "eventHandlers.hpp"
 #include "physicsHandlers.hpp"
 #include "material.hpp"
+#include "RandomManager.hpp"
 
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <random>
-#include <chrono>
 
 // Size of "blocks" in pixels
 #define PIXEL_SIZE 5
@@ -25,13 +24,6 @@ bool inBounds(int r, int c)
 
 int main()
 {
-    // Use the current time as a seed for the random number generator
-    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-    std::default_random_engine generator(seed);
-
-    // Define the distribution for floating-point numbers between 0 and 1
-    std::uniform_real_distribution<double> distribution(0.0, 1.0);
-
     // Make the window
     sf::RenderWindow window(
         sf::VideoMode(PIXEL_SIZE * SCREEN_SIZE, PIXEL_SIZE * SCREEN_SIZE),
@@ -89,7 +81,7 @@ int main()
             {
                 for (int j = col - spawnSize + 2; j <= col + (spawnSize - 2); ++j)
                 {
-                    if (inBounds(i, j) && data[i][j].material == AIR && distribution(generator) > 0.7)
+                    if (inBounds(i, j) && data[i][j].material == AIR && RandomManager::Instance().GetRandom() > 0.7)
                     {
                         data[i][j].material = material;
                         if (material == WATER || material == GAS || material == FIRE)
