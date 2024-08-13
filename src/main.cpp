@@ -84,7 +84,7 @@ int main()
                     if (inBounds(i, j) && data[i][j].material == AIR && RandomManager::Instance().GetRandom() > 0.7)
                     {
                         data[i][j].material = material;
-                        if (material == WATER || material == GAS || material == FIRE)
+                        if (material == WATER || material == GASOLINE || material == FIRE)
                             data[i][j].fluid_level = 9;
                     }
                 }
@@ -127,7 +127,7 @@ int main()
 
                         window.draw(shape);
                     }
-                    else if (data[i][j].material == GAS)
+                    else if (data[i][j].material == GASOLINE)
                     {
                         sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
                         shape.setFillColor(sf::Color(89, 89, 89));
