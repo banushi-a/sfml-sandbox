@@ -10,6 +10,7 @@ enum Material
     WATER,    // 3
     GASOLINE, // 4
     FIRE,     // 5
+    STEAM,    //  6
 };
 
 // Define the type a cell can be

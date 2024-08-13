@@ -143,6 +143,14 @@ int main()
 
                         window.draw(shape);
                     }
+                    else if (data[i][j].material == STEAM)
+                    {
+                        sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
+                        shape.setFillColor(sf::Color(224, 224, 224));
+                        shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
+
+                        window.draw(shape);
+                    }
                 }
             }
             window.display();

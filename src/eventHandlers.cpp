@@ -20,10 +20,13 @@ void handleEvents(sf::Event event, Material *material, int *spawnSize, Cell **da
             *material = WATER;
             break;
         case sf::Keyboard::G:
-            *material = GAS;
+            *material = GASOLINE;
             break;
         case sf::Keyboard::F:
             *material = FIRE;
+            break;
+        case sf::Keyboard::T:
+            *material = STEAM;
             break;
         case sf::Keyboard::R:
             for (int i = 0; i < SCREEN_SIZE; ++i)

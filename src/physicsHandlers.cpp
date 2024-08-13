@@ -120,6 +120,11 @@ void handleFireCell(Cell **data, int screenSize, int i, int j)
             data[i + 1][j].material = FIRE;
             data[i + 1][j].fluid_level = 9;
         }
+
+        if (data[i + 1][j].material == WATER && RandomManager::Instance().GetRandom() > 0.5)
+        {
+            data[i + 1][j].material = STEAM;
+        }
     }
 
     // If there is a row above us
@@ -129,6 +134,11 @@ void handleFireCell(Cell **data, int screenSize, int i, int j)
         {
             data[i - 1][j].material = FIRE;
             data[i - 1][j].fluid_level = 9;
+        }
+
+        if (data[i - 1][j].material == WATER && RandomManager::Instance().GetRandom() > 0.5)
+        {
+            data[i - 1][j].material = STEAM;
         }
     }
 
@@ -140,6 +150,11 @@ void handleFireCell(Cell **data, int screenSize, int i, int j)
             data[i][j - 1].material = FIRE;
             data[i][j - 1].fluid_level = 9;
         }
+
+        if (data[i][j - 1].material == WATER && RandomManager::Instance().GetRandom() > 0.5)
+        {
+            data[i][j - 1].material = STEAM;
+        }
     }
 
     // If there is a column after us
@@ -150,6 +165,36 @@ void handleFireCell(Cell **data, int screenSize, int i, int j)
             data[i][j + 1].material = FIRE;
             data[i][j + 1].fluid_level = 9;
         }
+
+        if (data[i][j + 1].material == WATER && RandomManager::Instance().GetRandom() > 0.5)
+        {
+            data[i][j + 1].material = STEAM;
+        }
+    }
+}
+
+void handleSteamCell(Cell **data, int screenSize, int i, int j)
+{
+    // If there is a row above us and if there is air above the steam
+    if (i > 0 && data[i - 1][j].material == AIR)
+    {
+        // Let the steam float up
+        data[i - 1][j].material = STEAM;
+        data[i][j].material = AIR;
+    }
+    // If there is a row to the right of us and it is air
+    else if (j < screenSize - 1 && data[i][j + 1].material == AIR)
+    {
+        // Move the steam right
+        data[i][j + 1].material = STEAM;
+        data[i][j].material = AIR;
+    }
+    // If there is a row to the left of us
+    else if (j > 0 && data[i][j - 1].material == AIR)
+    {
+        // Move the steam left
+        data[i][j - 1].material = STEAM;
+        data[i][j].material = AIR;
     }
 }
 
@@ -181,6 +226,10 @@ void updateData(Cell **data, int screenSize)
             else if (data[i][j].material == FIRE)
             {
                 handleFireCell(data, screenSize, i, j);
+            }
+            else if (data[i][j].material == STEAM)
+            {
+                handleSteamCell(data, screenSize, i, j);
             }
         }
     }
