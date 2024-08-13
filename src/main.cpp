@@ -14,8 +14,6 @@
 #define PIXEL_SIZE 5
 // Number of pixels
 #define SCREEN_SIZE 200
-// Throttles how fast things happen
-#define TICK_RESET 256
 
 bool inBounds(int r, int c)
 {
@@ -27,7 +25,7 @@ int main()
     // Make the window
     sf::RenderWindow window(
         sf::VideoMode(PIXEL_SIZE * SCREEN_SIZE, PIXEL_SIZE * SCREEN_SIZE),
-        "Sandbox Test");
+        "Sandbox");
 
     // Dynamic allocation of a 2D array (matrix)
     Cell **data = new Cell *[SCREEN_SIZE];
@@ -39,12 +37,26 @@ int main()
     Material material = BRICK;
     int spawnSize = 3;
 
-    int tick = 0;
+    // Create a clock for measuring time elapsed
+    sf::Clock clock;
 
     // Main Loop of The Program
     while (window.isOpen())
     {
-        tick = (tick + 1) % TICK_RESET;
+        // Calculate delta time
+        sf::Time deltaTime = clock.restart();
+        float dt = deltaTime.asSeconds();
+
+        std::cout << (1.0f / 60.0f) - dt << std::endl;
+
+        // Calculate the FPS
+        float fps = static_cast<int>((1.0f / dt) + 0.5f);
+
+        // Set the window title with the current FPS
+        std::ostringstream title;
+        title << "Sandbox - FPS: " << fps;
+        window.setTitle(title.str());
+
         // Poll all events on this tick
         sf::Event event;
         while (window.pollEvent(event))
@@ -64,7 +76,7 @@ int main()
             handleEvents(event, &material, &spawnSize, data, SCREEN_SIZE);
         }
 
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && tick == 0)
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
         {
             // Get the position where the mouse was clicked
             sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
@@ -92,69 +104,67 @@ int main()
         }
 
         // Make the bricks "fall"
-        if (tick == 0)
-        {
-            updateData(data, SCREEN_SIZE);
-        }
+        updateData(data, SCREEN_SIZE);
 
         // Clear the window and draw everything over
-        if (tick == 0)
+        window.clear();
+        for (int i = 0; i < SCREEN_SIZE; ++i)
         {
-            window.clear();
-            for (int i = 0; i < SCREEN_SIZE; ++i)
+            for (int j = 0; j < SCREEN_SIZE; ++j)
             {
-                for (int j = 0; j < SCREEN_SIZE; ++j)
+                if (data[i][j].material == BRICK)
                 {
-                    if (data[i][j].material == BRICK)
-                    {
-                        sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
-                        shape.setFillColor(sf::Color(77, 26, 30));
-                        shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
-                        window.draw(shape);
-                    }
-                    else if (data[i][j].material == SAND)
-                    {
-                        sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
-                        shape.setFillColor(sf::Color(232, 181, 114));
-                        shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
-                        window.draw(shape);
-                    }
-                    else if (data[i][j].material == WATER)
-                    {
-                        sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
-                        shape.setFillColor(sf::Color(30, 192, 232));
-                        shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
+                    sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
+                    shape.setFillColor(sf::Color(77, 26, 30));
+                    shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
+                    window.draw(shape);
+                }
+                else if (data[i][j].material == SAND)
+                {
+                    sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
+                    shape.setFillColor(sf::Color(232, 181, 114));
+                    shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
+                    window.draw(shape);
+                }
+                else if (data[i][j].material == WATER)
+                {
+                    sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
+                    shape.setFillColor(sf::Color(30, 192, 232));
+                    shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
 
-                        window.draw(shape);
-                    }
-                    else if (data[i][j].material == GASOLINE)
-                    {
-                        sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
-                        shape.setFillColor(sf::Color(89, 89, 89));
-                        shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
+                    window.draw(shape);
+                }
+                else if (data[i][j].material == GASOLINE)
+                {
+                    sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
+                    shape.setFillColor(sf::Color(89, 89, 89));
+                    shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
 
-                        window.draw(shape);
-                    }
-                    else if (data[i][j].material == FIRE)
-                    {
-                        sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
-                        shape.setFillColor(sf::Color(163, 33, 33));
-                        shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
+                    window.draw(shape);
+                }
+                else if (data[i][j].material == FIRE)
+                {
+                    sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
+                    shape.setFillColor(sf::Color(163, 33, 33));
+                    shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
 
-                        window.draw(shape);
-                    }
-                    else if (data[i][j].material == STEAM)
-                    {
-                        sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
-                        shape.setFillColor(sf::Color(224, 224, 224));
-                        shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
+                    window.draw(shape);
+                }
+                else if (data[i][j].material == STEAM)
+                {
+                    sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
+                    shape.setFillColor(sf::Color(224, 224, 224));
+                    shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
 
-                        window.draw(shape);
-                    }
+                    window.draw(shape);
                 }
             }
-            window.display();
         }
+
+        window.display();
+
+        // Limit the framerate
+        sf::sleep(sf::seconds(1.0f / 60.0f) - deltaTime);
     }
     return 0;
 }
