@@ -27,6 +27,8 @@ int main()
         sf::VideoMode(PIXEL_SIZE * SCREEN_SIZE, PIXEL_SIZE * SCREEN_SIZE),
         "Sandbox");
 
+    window.setFramerateLimit(60);
+
     // Dynamic allocation of a 2D array (matrix)
     Cell **data = new Cell *[SCREEN_SIZE];
     for (int i = 0; i < SCREEN_SIZE; ++i)
@@ -46,8 +48,6 @@ int main()
         // Calculate delta time
         sf::Time deltaTime = clock.restart();
         float dt = deltaTime.asSeconds();
-
-        std::cout << (1.0f / 60.0f) - dt << std::endl;
 
         // Calculate the FPS
         float fps = static_cast<int>((1.0f / dt) + 0.5f);
@@ -162,9 +162,6 @@ int main()
         }
 
         window.display();
-
-        // Limit the framerate
-        sf::sleep(sf::seconds(1.0f / 60.0f) - deltaTime);
     }
     return 0;
 }
