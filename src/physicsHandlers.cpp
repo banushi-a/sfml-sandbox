@@ -6,7 +6,7 @@
 
 bool isFluid(Material material)
 {
-    return material == WATER || material == GAS;
+    return material == WATER || material == GASOLINE;
 }
 
 void handleFluid(Cell **data, int screenSize, int i, int j, Material fluid)
@@ -46,9 +46,9 @@ void handleWaterCell(Cell **data, int screenSize, int i, int j)
     handleFluid(data, screenSize, i, j, WATER);
 }
 
-void handleGasCell(Cell **data, int screenSize, int i, int j)
+void handleGasolineCell(Cell **data, int screenSize, int i, int j)
 {
-    handleFluid(data, screenSize, i, j, GAS);
+    handleFluid(data, screenSize, i, j, GASOLINE);
 }
 
 void handleBrickCell(Cell **data, int screenSize, int i, int j)
@@ -115,7 +115,7 @@ void handleFireCell(Cell **data, int screenSize, int i, int j)
     // If there is a row below us
     if (i < screenSize - 1)
     {
-        if (data[i + 1][j].material == GAS && RandomManager::Instance().GetRandom() > 0.5)
+        if (data[i + 1][j].material == GASOLINE && RandomManager::Instance().GetRandom() > 0.5)
         {
             data[i + 1][j].material = FIRE;
             data[i + 1][j].fluid_level = 9;
@@ -125,7 +125,7 @@ void handleFireCell(Cell **data, int screenSize, int i, int j)
     // If there is a row above us
     if (i > 0)
     {
-        if (data[i - 1][j].material == GAS && RandomManager::Instance().GetRandom() > 0.5)
+        if (data[i - 1][j].material == GASOLINE && RandomManager::Instance().GetRandom() > 0.5)
         {
             data[i - 1][j].material = FIRE;
             data[i - 1][j].fluid_level = 9;
@@ -135,7 +135,7 @@ void handleFireCell(Cell **data, int screenSize, int i, int j)
     // If there is a column before us
     if (j > 0)
     {
-        if (data[i][j - 1].material == GAS && RandomManager::Instance().GetRandom() > 0.5)
+        if (data[i][j - 1].material == GASOLINE && RandomManager::Instance().GetRandom() > 0.5)
         {
             data[i][j - 1].material = FIRE;
             data[i][j - 1].fluid_level = 9;
@@ -145,7 +145,7 @@ void handleFireCell(Cell **data, int screenSize, int i, int j)
     // If there is a column after us
     if (j < screenSize - 1)
     {
-        if (data[i][j + 1].material == GAS && RandomManager::Instance().GetRandom() > 0.5)
+        if (data[i][j + 1].material == GASOLINE && RandomManager::Instance().GetRandom() > 0.5)
         {
             data[i][j + 1].material = FIRE;
             data[i][j + 1].fluid_level = 9;
@@ -166,9 +166,9 @@ void updateData(Cell **data, int screenSize)
             {
                 handleWaterCell(data, screenSize, i, j);
             }
-            else if (data[i][j].material == GAS)
+            else if (data[i][j].material == GASOLINE)
             {
-                handleGasCell(data, screenSize, i, j);
+                handleGasolineCell(data, screenSize, i, j);
             }
             else if (data[i][j].material == BRICK)
             {

@@ -4,12 +4,12 @@
 // Type of Material Available in Sandbox
 enum Material
 {
-    AIR,   // 0
-    BRICK, // 1
-    SAND,  // 2
-    WATER, // 3
-    GAS,   // 4
-    FIRE,  // 5
+    AIR,      // 0
+    BRICK,    // 1
+    SAND,     // 2
+    WATER,    // 3
+    GASOLINE, // 4
+    FIRE,     // 5
 };
 
 // Define the type a cell can be
