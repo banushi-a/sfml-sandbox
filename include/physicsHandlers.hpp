@@ -3,6 +3,6 @@
 
 #include "material.hpp"
 
-void updateData(Cell **data, int screenSize);
+void updateData(Cell **data, int screenSize, int currTick);
 
 #endif

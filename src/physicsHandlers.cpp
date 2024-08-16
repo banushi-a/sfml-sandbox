@@ -9,7 +9,7 @@ bool isFluid(Material material)
     return material == WATER || material == GASOLINE;
 }
 
-void handleFluid(Cell **data, int screenSize, int i, int j, Material fluid)
+void handleFluid(Cell **data, int screenSize, int i, int j, Material fluid, int currTick)
 {
     // If there is a row below us and if there is air below the fluid
     if (i < screenSize - 1 && data[i + 1][j].material == AIR)
@@ -17,9 +17,11 @@ void handleFluid(Cell **data, int screenSize, int i, int j, Material fluid)
         // Drop the water
         data[i + 1][j].material = fluid;
         data[i + 1][j].fluid_level = 9;
+        data[i + 1][j].last_updated = currTick;
 
         data[i][j].material = AIR;
         data[i][j].fluid_level = 0;
+        data[i][j].last_updated = currTick;
     }
     // If there is a row to the right of us and it is air
     else if (j < screenSize - 1 && data[i][j + 1].material == AIR)
@@ -27,8 +29,11 @@ void handleFluid(Cell **data, int screenSize, int i, int j, Material fluid)
         // Move the fluid right
         data[i][j + 1].material = fluid;
         data[i][j + 1].fluid_level = (int)(data[i][j].fluid_level / 2);
+        data[i][j + 1].last_updated = currTick;
+
         data[i][j].material = AIR;
         data[i][j].fluid_level = (int)std::ceil(data[i][j].fluid_level / 2);
+        data[i][j].last_updated = currTick;
     }
     // If there is a row to the left of us
     else if (j > 0 && data[i][j - 1].material == AIR)
@@ -36,22 +41,25 @@ void handleFluid(Cell **data, int screenSize, int i, int j, Material fluid)
         // Move the fluid left
         data[i][j - 1].material = fluid;
         data[i][j - 1].fluid_level = (int)(data[i][j].fluid_level / 2);
+        data[i][j - 1].last_updated = currTick;
+
         data[i][j].material = AIR;
         data[i][j].fluid_level = (int)std::ceil(data[i][j].fluid_level / 2);
+        data[i][j].last_updated = currTick;
     }
 }
 
-void handleWaterCell(Cell **data, int screenSize, int i, int j)
+void handleWaterCell(Cell **data, int screenSize, int i, int j, int currTick)
 {
-    handleFluid(data, screenSize, i, j, WATER);
+    handleFluid(data, screenSize, i, j, WATER, currTick);
 }
 
-void handleGasolineCell(Cell **data, int screenSize, int i, int j)
+void handleGasolineCell(Cell **data, int screenSize, int i, int j, int currTick)
 {
-    handleFluid(data, screenSize, i, j, GASOLINE);
+    handleFluid(data, screenSize, i, j, GASOLINE, currTick);
 }
 
-void handleBrickCell(Cell **data, int screenSize, int i, int j)
+void handleBrickCell(Cell **data, int screenSize, int i, int j, int currTick)
 {
     // If their is fluid below us
     if (i < screenSize - 1 && isFluid(data[i + 1][j].material))
@@ -59,14 +67,20 @@ void handleBrickCell(Cell **data, int screenSize, int i, int j)
         // Let the brick "fall", i.e. swap the air and brick
         data[i][j].material = data[i + 1][j].material;
         data[i][j].fluid_level = data[i + 1][j].fluid_level;
+        data[i][j].last_updated = currTick;
+
         data[i + 1][j].material = BRICK;
         data[i + 1][j].fluid_level = 0;
+        data[i + 1][j].last_updated = currTick;
     }
     else if (i < screenSize - 1 && data[i + 1][j].material == AIR)
     {
         // Let the brick "fall", i.e. swap the air and brick
-        data[i][j].material = data[i + 1][j].material;
+        data[i][j].material = AIR;
+        data[i][j].last_updated = currTick;
+
         data[i + 1][j].material = BRICK;
+        data[i + 1][j].last_updated = currTick;
     }
 }
 
@@ -173,32 +187,41 @@ void handleFireCell(Cell **data, int screenSize, int i, int j)
     }
 }
 
-void handleSteamCell(Cell **data, int screenSize, int i, int j)
+void handleSteamCell(Cell **data, int screenSize, int i, int j, int currTick)
 {
     // If there is a row above us and if there is air above the steam
     if (i > 0 && data[i - 1][j].material == AIR)
     {
         // Let the steam float up
         data[i - 1][j].material = STEAM;
+        data[i - 1][j].last_updated = currTick;
+
         data[i][j].material = AIR;
+        data[i][j].last_updated = currTick;
     }
     // If there is a row to the right of us and it is air
     else if (j < screenSize - 1 && data[i][j + 1].material == AIR)
     {
         // Move the steam right
         data[i][j + 1].material = STEAM;
+        data[i][j + 1].last_updated = currTick;
+
         data[i][j].material = AIR;
+        data[i][j].last_updated = currTick;
     }
     // If there is a row to the left of us
     else if (j > 0 && data[i][j - 1].material == AIR)
     {
         // Move the steam left
         data[i][j - 1].material = STEAM;
+        data[i][j - 1].last_updated = currTick;
+
         data[i][j].material = AIR;
+        data[i][j].last_updated = currTick;
     }
 }
 
-void updateData(Cell **data, int screenSize)
+void updateData(Cell **data, int screenSize, int currTick)
 {
     // We iterate through the rows bottom up, stopping at the second row
     for (int i = screenSize - 1; i >= 0; i--)
@@ -206,18 +229,22 @@ void updateData(Cell **data, int screenSize)
         // Iterate through the columns left to right
         for (int j = 0; j < screenSize; j++)
         {
+            // Don't update the cell if we have already done so this tick
+            if (data[i][j].last_updated == currTick)
+                continue;
+
             // If the cell we are looking at is water
             if (data[i][j].material == WATER)
             {
-                handleWaterCell(data, screenSize, i, j);
+                handleWaterCell(data, screenSize, i, j, currTick);
             }
             else if (data[i][j].material == GASOLINE)
             {
-                handleGasolineCell(data, screenSize, i, j);
+                handleGasolineCell(data, screenSize, i, j, currTick);
             }
             else if (data[i][j].material == BRICK)
             {
-                handleBrickCell(data, screenSize, i, j);
+                handleBrickCell(data, screenSize, i, j, currTick);
             }
             else if (data[i][j].material == SAND)
             {
@@ -229,7 +256,7 @@ void updateData(Cell **data, int screenSize)
             }
             else if (data[i][j].material == STEAM)
             {
-                handleSteamCell(data, screenSize, i, j);
+                handleSteamCell(data, screenSize, i, j, currTick);
             }
         }
     }

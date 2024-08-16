@@ -21,10 +21,12 @@ struct Cell
     Material material;
     // Fluid level of the cell is an integer in [0, 9]
     int fluid_level;
+    // Last tick that the cell was updated
+    int last_updated;
 
     // ----- Constructors --------------//
-    Cell() : material(AIR), fluid_level(0) {}
-    Cell(Material m, int fL) : material(m), fluid_level(fL) {}
+    Cell() : material(AIR), fluid_level(0), last_updated(0) {}
+    Cell(Material m, int fL, int lU) : material(m), fluid_level(fL), last_updated(lU) {}
 };
 
 #endif

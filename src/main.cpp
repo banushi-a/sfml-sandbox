@@ -41,6 +41,7 @@ int main()
 
     // Create a clock for measuring time elapsed
     sf::Clock clock;
+    int tick = 0;
 
     // Main Loop of The Program
     while (window.isOpen())
@@ -48,6 +49,7 @@ int main()
         // Calculate delta time
         sf::Time deltaTime = clock.restart();
         float dt = deltaTime.asSeconds();
+        tick += 1;
 
         // Calculate the FPS
         float fps = static_cast<int>((1.0f / dt) + 0.5f);
@@ -98,13 +100,14 @@ int main()
                         data[i][j].material = material;
                         if (material == WATER || material == GASOLINE || material == FIRE)
                             data[i][j].fluid_level = 9;
+                        data[i][j].last_updated = tick;
                     }
                 }
             }
         }
 
         // Make the bricks "fall"
-        updateData(data, SCREEN_SIZE);
+        updateData(data, SCREEN_SIZE, tick);
 
         // Clear the window and draw everything over
         window.clear();
