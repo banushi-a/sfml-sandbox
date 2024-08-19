@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "physicsHandlers.hpp"
 #include "material.hpp"
 #include "RandomManager.hpp"
@@ -233,30 +235,29 @@ void updateData(Cell **data, int screenSize, int currTick)
             if (data[i][j].last_updated == currTick)
                 continue;
 
-            // If the cell we are looking at is water
-            if (data[i][j].material == WATER)
+            switch (data[i][j].material)
             {
+            case WATER:
                 handleWaterCell(data, screenSize, i, j, currTick);
-            }
-            else if (data[i][j].material == GASOLINE)
-            {
+                break;
+            case GASOLINE:
                 handleGasolineCell(data, screenSize, i, j, currTick);
-            }
-            else if (data[i][j].material == BRICK)
-            {
+                break;
+            case BRICK:
                 handleBrickCell(data, screenSize, i, j, currTick);
-            }
-            else if (data[i][j].material == SAND)
-            {
+                break;
+            case SAND:
                 handleSandCell(data, screenSize, i, j);
-            }
-            else if (data[i][j].material == FIRE)
-            {
+                break;
+            case FIRE:
                 handleFireCell(data, screenSize, i, j);
-            }
-            else if (data[i][j].material == STEAM)
-            {
+                break;
+            case STEAM:
                 handleSteamCell(data, screenSize, i, j, currTick);
+                break;
+            default:
+                std::cout << "Unsupported Material, ID: " << data[i][j].material << std::endl;
+                break;
             }
         }
     }
