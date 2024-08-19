@@ -256,9 +256,7 @@ void updateData(Cell **data, int screenSize, int currTick)
                 handleSteamCell(data, screenSize, i, j, currTick);
                 break;
             case AIR:
-                break;
             default:
-                std::cout << "Unsupported Material, ID: " << data[i][j].material << std::endl;
                 break;
             }
         }
