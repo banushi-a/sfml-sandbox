@@ -72,6 +72,7 @@ int main()
                     delete[] data[i];
                 }
                 delete[] data;
+                window.setFramerateLimit(0);
                 window.close();
             }
 
