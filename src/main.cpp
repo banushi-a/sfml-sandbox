@@ -112,27 +112,27 @@ int main()
 
         // Clear the window and draw everything over
         window.clear();
+
+        sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
+
         for (int i = 0; i < SCREEN_SIZE; ++i)
         {
             for (int j = 0; j < SCREEN_SIZE; ++j)
             {
                 if (data[i][j].material == BRICK)
                 {
-                    sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
                     shape.setFillColor(sf::Color(77, 26, 30));
                     shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
                     window.draw(shape);
                 }
                 else if (data[i][j].material == SAND)
                 {
-                    sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
                     shape.setFillColor(sf::Color(232, 181, 114));
                     shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
                     window.draw(shape);
                 }
                 else if (data[i][j].material == WATER)
                 {
-                    sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
                     shape.setFillColor(sf::Color(30, 192, 232));
                     shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
 
@@ -140,7 +140,6 @@ int main()
                 }
                 else if (data[i][j].material == GASOLINE)
                 {
-                    sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
                     shape.setFillColor(sf::Color(89, 89, 89));
                     shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
 
@@ -148,7 +147,6 @@ int main()
                 }
                 else if (data[i][j].material == FIRE)
                 {
-                    sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
                     shape.setFillColor(sf::Color(163, 33, 33));
                     shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
 
@@ -156,7 +154,6 @@ int main()
                 }
                 else if (data[i][j].material == STEAM)
                 {
-                    sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
                     shape.setFillColor(sf::Color(224, 224, 224));
                     shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
 
