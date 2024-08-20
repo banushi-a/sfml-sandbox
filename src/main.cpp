@@ -135,28 +135,24 @@ int main()
                 {
                     shape.setFillColor(sf::Color(30, 192, 232));
                     shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
-
                     window.draw(shape);
                 }
                 else if (data[i][j].material == GASOLINE)
                 {
                     shape.setFillColor(sf::Color(89, 89, 89));
                     shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
-
                     window.draw(shape);
                 }
                 else if (data[i][j].material == FIRE)
                 {
                     shape.setFillColor(sf::Color(163, 33, 33));
                     shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
-
                     window.draw(shape);
                 }
                 else if (data[i][j].material == STEAM)
                 {
                     shape.setFillColor(sf::Color(224, 224, 224));
                     shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
-
                     window.draw(shape);
                 }
             }
