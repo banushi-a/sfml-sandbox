@@ -120,6 +120,9 @@ int main()
         {
             for (int j = 0; j < SCREEN_SIZE; ++j)
             {
+                if (data[i][j].material == AIR)
+                    continue;
+
                 shape.setFillColor(data[i][j].color);
                 shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
                 window.draw(shape);
