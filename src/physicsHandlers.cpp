@@ -147,6 +147,7 @@ void handleFireCell(Cell **data, int screenSize, int i, int j)
     if (data[i][j].fluid_level == 0)
     {
         data[i][j].material = AIR;
+        data[i][j].color = Cell::GetColorForMaterial(AIR);
     }
     else
     {
