@@ -102,6 +102,7 @@ int main()
                         if (material == WATER || material == GASOLINE || material == FIRE)
                             data[i][j].fluid_level = 9;
                         data[i][j].last_updated = tick;
+                        data[i][j].color = Cell::GetColorForMaterial(material);
                     }
                 }
             }
@@ -119,42 +120,9 @@ int main()
         {
             for (int j = 0; j < SCREEN_SIZE; ++j)
             {
-                if (data[i][j].material == BRICK)
-                {
-                    shape.setFillColor(sf::Color(77, 26, 30));
-                    shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
-                    window.draw(shape);
-                }
-                else if (data[i][j].material == SAND)
-                {
-                    shape.setFillColor(sf::Color(232, 181, 114));
-                    shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
-                    window.draw(shape);
-                }
-                else if (data[i][j].material == WATER)
-                {
-                    shape.setFillColor(sf::Color(30, 192, 232));
-                    shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
-                    window.draw(shape);
-                }
-                else if (data[i][j].material == GASOLINE)
-                {
-                    shape.setFillColor(sf::Color(89, 89, 89));
-                    shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
-                    window.draw(shape);
-                }
-                else if (data[i][j].material == FIRE)
-                {
-                    shape.setFillColor(sf::Color(163, 33, 33));
-                    shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
-                    window.draw(shape);
-                }
-                else if (data[i][j].material == STEAM)
-                {
-                    shape.setFillColor(sf::Color(224, 224, 224));
-                    shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
-                    window.draw(shape);
-                }
+                shape.setFillColor(data[i][j].color);
+                shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
+                window.draw(shape);
             }
         }
 

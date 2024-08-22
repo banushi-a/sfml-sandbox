@@ -18,10 +18,12 @@ void handleFluid(Cell **data, int screenSize, int i, int j, Material fluid, int 
     {
         // Drop the water
         data[i + 1][j].material = fluid;
-        data[i + 1][j].fluid_level = 9;
+        data[i + 1][j].color = Cell::GetColorForMaterial(fluid);
+        data[i + 1][j].fluid_level = data[i][j].fluid_level;
         data[i + 1][j].last_updated = currTick;
 
         data[i][j].material = AIR;
+        data[i][j].color = Cell::GetColorForMaterial(AIR);
         data[i][j].fluid_level = 0;
         data[i][j].last_updated = currTick;
     }
@@ -30,10 +32,12 @@ void handleFluid(Cell **data, int screenSize, int i, int j, Material fluid, int 
     {
         // Move the fluid right
         data[i][j + 1].material = fluid;
+        data[i][j + 1].color = Cell::GetColorForMaterial(fluid);
         data[i][j + 1].fluid_level = (int)(data[i][j].fluid_level / 2);
         data[i][j + 1].last_updated = currTick;
 
         data[i][j].material = AIR;
+        data[i][j].color = Cell::GetColorForMaterial(AIR);
         data[i][j].fluid_level = (int)std::ceil(data[i][j].fluid_level / 2);
         data[i][j].last_updated = currTick;
     }
@@ -42,10 +46,12 @@ void handleFluid(Cell **data, int screenSize, int i, int j, Material fluid, int 
     {
         // Move the fluid left
         data[i][j - 1].material = fluid;
+        data[i][j - 1].color = Cell::GetColorForMaterial(fluid);
         data[i][j - 1].fluid_level = (int)(data[i][j].fluid_level / 2);
         data[i][j - 1].last_updated = currTick;
 
         data[i][j].material = AIR;
+        data[i][j].color = Cell::GetColorForMaterial(AIR);
         data[i][j].fluid_level = (int)std::ceil(data[i][j].fluid_level / 2);
         data[i][j].last_updated = currTick;
     }
@@ -68,10 +74,12 @@ void handleBrickCell(Cell **data, int screenSize, int i, int j, int currTick)
     {
         // Let the brick "fall", i.e. swap the air and brick
         data[i][j].material = data[i + 1][j].material;
+        data[i][j].color = Cell::GetColorForMaterial(data[i + 1][j].material);
         data[i][j].fluid_level = data[i + 1][j].fluid_level;
         data[i][j].last_updated = currTick;
 
         data[i + 1][j].material = BRICK;
+        data[i + 1][j].color = Cell::GetColorForMaterial(BRICK);
         data[i + 1][j].fluid_level = 0;
         data[i + 1][j].last_updated = currTick;
     }
@@ -79,14 +87,16 @@ void handleBrickCell(Cell **data, int screenSize, int i, int j, int currTick)
     {
         // Let the brick "fall", i.e. swap the air and brick
         data[i][j].material = AIR;
+        data[i][j].color = Cell::GetColorForMaterial(AIR);
         data[i][j].last_updated = currTick;
 
         data[i + 1][j].material = BRICK;
+        data[i + 1][j].color = Cell::GetColorForMaterial(BRICK);
         data[i + 1][j].last_updated = currTick;
     }
 }
 
-void handleSandCell(Cell **data, int screenSize, int i, int j)
+void handleSandCell(Cell **data, int screenSize, int i, int j, int currTick)
 {
     // If there is a row below us
     if (i < screenSize - 1)
@@ -95,7 +105,12 @@ void handleSandCell(Cell **data, int screenSize, int i, int j)
         if (data[i + 1][j].material == AIR || isFluid(data[i + 1][j].material))
         {
             data[i][j].material = data[i + 1][j].material;
+            data[i][j].color = Cell::GetColorForMaterial(data[i + 1][j].material);
+            data[i][j].last_updated = currTick;
+
             data[i + 1][j].material = SAND;
+            data[i + 1][j].color = Cell::GetColorForMaterial(SAND);
+            data[i + 1][j].last_updated = currTick;
         }
         // If there is air to the right and down of us
         else if (j < screenSize - 1 &&
@@ -103,7 +118,12 @@ void handleSandCell(Cell **data, int screenSize, int i, int j)
                  data[i + 1][j].material != AIR)
         {
             data[i][j].material = data[i + 1][j + 1].material;
+            data[i][j].color = Cell::GetColorForMaterial(data[i + 1][j + 1].material);
+            data[i][j].last_updated = currTick;
+
             data[i + 1][j + 1].material = SAND;
+            data[i + 1][j + 1].color = Cell::GetColorForMaterial(SAND);
+            data[i + 1][j + 1].last_updated = currTick;
         }
         // If there is air to the left and down of us
         else if (j > 0 &&
@@ -111,7 +131,12 @@ void handleSandCell(Cell **data, int screenSize, int i, int j)
                  data[i + 1][j].material != AIR)
         {
             data[i][j].material = data[i + 1][j - 1].material;
+            data[i][j].color = Cell::GetColorForMaterial(data[i + 1][j - 1].material);
+            data[i][j].last_updated = currTick;
+
             data[i + 1][j - 1].material = SAND;
+            data[i + 1][j - 1].color = Cell::GetColorForMaterial(SAND);
+            data[i + 1][j - 1].last_updated = currTick;
         }
     }
 }
@@ -134,12 +159,14 @@ void handleFireCell(Cell **data, int screenSize, int i, int j)
         if (data[i + 1][j].material == GASOLINE && RandomManager::Instance().GetRandom() > 0.5)
         {
             data[i + 1][j].material = FIRE;
+            data[i + 1][j].color = Cell::GetColorForMaterial(FIRE);
             data[i + 1][j].fluid_level = 9;
         }
 
         if (data[i + 1][j].material == WATER && RandomManager::Instance().GetRandom() > 0.5)
         {
             data[i + 1][j].material = STEAM;
+            data[i + 1][j].color = Cell::GetColorForMaterial(STEAM);
         }
     }
 
@@ -149,12 +176,14 @@ void handleFireCell(Cell **data, int screenSize, int i, int j)
         if (data[i - 1][j].material == GASOLINE && RandomManager::Instance().GetRandom() > 0.5)
         {
             data[i - 1][j].material = FIRE;
+            data[i - 1][j].color = Cell::GetColorForMaterial(FIRE);
             data[i - 1][j].fluid_level = 9;
         }
 
         if (data[i - 1][j].material == WATER && RandomManager::Instance().GetRandom() > 0.5)
         {
             data[i - 1][j].material = STEAM;
+            data[i - 1][j].color = Cell::GetColorForMaterial(STEAM);
         }
     }
 
@@ -164,12 +193,14 @@ void handleFireCell(Cell **data, int screenSize, int i, int j)
         if (data[i][j - 1].material == GASOLINE && RandomManager::Instance().GetRandom() > 0.5)
         {
             data[i][j - 1].material = FIRE;
+            data[i][j - 1].color = Cell::GetColorForMaterial(FIRE);
             data[i][j - 1].fluid_level = 9;
         }
 
         if (data[i][j - 1].material == WATER && RandomManager::Instance().GetRandom() > 0.5)
         {
             data[i][j - 1].material = STEAM;
+            data[i][j - 1].color = Cell::GetColorForMaterial(STEAM);
         }
     }
 
@@ -179,12 +210,14 @@ void handleFireCell(Cell **data, int screenSize, int i, int j)
         if (data[i][j + 1].material == GASOLINE && RandomManager::Instance().GetRandom() > 0.5)
         {
             data[i][j + 1].material = FIRE;
+            data[i][j + 1].color = Cell::GetColorForMaterial(FIRE);
             data[i][j + 1].fluid_level = 9;
         }
 
         if (data[i][j + 1].material == WATER && RandomManager::Instance().GetRandom() > 0.5)
         {
             data[i][j + 1].material = STEAM;
+            data[i][j + 1].color = Cell::GetColorForMaterial(STEAM);
         }
     }
 }
@@ -196,9 +229,11 @@ void handleSteamCell(Cell **data, int screenSize, int i, int j, int currTick)
     {
         // Let the steam float up
         data[i - 1][j].material = STEAM;
+        data[i - 1][j].color = Cell::GetColorForMaterial(STEAM);
         data[i - 1][j].last_updated = currTick;
 
         data[i][j].material = AIR;
+        data[i][j].color = Cell::GetColorForMaterial(AIR);
         data[i][j].last_updated = currTick;
     }
     // If there is a row to the right of us and it is air
@@ -206,9 +241,11 @@ void handleSteamCell(Cell **data, int screenSize, int i, int j, int currTick)
     {
         // Move the steam right
         data[i][j + 1].material = STEAM;
+        data[i][j + 1].color = Cell::GetColorForMaterial(STEAM);
         data[i][j + 1].last_updated = currTick;
 
         data[i][j].material = AIR;
+        data[i][j].color = Cell::GetColorForMaterial(AIR);
         data[i][j].last_updated = currTick;
     }
     // If there is a row to the left of us
@@ -216,9 +253,11 @@ void handleSteamCell(Cell **data, int screenSize, int i, int j, int currTick)
     {
         // Move the steam left
         data[i][j - 1].material = STEAM;
+        data[i][j - 1].color = Cell::GetColorForMaterial(STEAM);
         data[i][j - 1].last_updated = currTick;
 
         data[i][j].material = AIR;
+        data[i][j].color = Cell::GetColorForMaterial(AIR);
         data[i][j].last_updated = currTick;
     }
 }
@@ -247,7 +286,7 @@ void updateData(Cell **data, int screenSize, int currTick)
                 handleBrickCell(data, screenSize, i, j, currTick);
                 break;
             case SAND:
-                handleSandCell(data, screenSize, i, j);
+                handleSandCell(data, screenSize, i, j, currTick);
                 break;
             case FIRE:
                 handleFireCell(data, screenSize, i, j);
