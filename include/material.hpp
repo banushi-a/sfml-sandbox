@@ -3,6 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "RandomManager.hpp"
+
 // Type of Material Available in Sandbox
 enum Material
 {
@@ -44,7 +46,9 @@ struct Cell
         case BRICK:
             return sf::Color(77, 26, 30);
         case SAND:
-            return sf::Color(232, 181, 114);
+            if (RandomManager::Instance().GetRandom() < 0.5)
+                return sf::Color(232, 181, 114);
+            return sf::Color(210, 134, 34);
         case FIRE:
             return sf::Color(163, 33, 33);
         case STEAM:
@@ -55,7 +59,7 @@ struct Cell
         }
     }
 
-    // TODO: Use these
+    // TODO: Use these in physicsHandlers
     void SetMaterial(Material m, int currTick)
     {
         material = m;                   // Set the material
