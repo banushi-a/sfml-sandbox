@@ -55,11 +55,17 @@ struct Cell
         }
     }
 
-    // TODO: Use this
+    // TODO: Use these
     void SetMaterial(Material m)
     {
         material = m;                   // Set the material
         color = GetColorForMaterial(m); // Set the corresponding color
+    }
+
+    void SetMaterial(Material m, sf::Color c)
+    {
+        material = m;
+        color = c;
     }
 };
 
