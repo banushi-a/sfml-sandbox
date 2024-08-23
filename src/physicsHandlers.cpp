@@ -104,39 +104,30 @@ void handleSandCell(Cell **data, int screenSize, int i, int j, int currTick)
         // If the sand is above air
         if (data[i + 1][j].material == AIR || isFluid(data[i + 1][j].material))
         {
-            data[i][j].material = data[i + 1][j].material;
-            data[i][j].color = Cell::GetColorForMaterial(data[i + 1][j].material);
-            data[i][j].last_updated = currTick;
+            Cell temp = data[i][j];
 
-            data[i + 1][j].material = SAND;
-            data[i + 1][j].color = Cell::GetColorForMaterial(SAND);
-            data[i + 1][j].last_updated = currTick;
+            data[i][j].SetMaterial(data[i + 1][j].material, data[i + 1][j].color, currTick);
+            data[i + 1][j].SetMaterial(temp.material, temp.color, currTick);
         }
         // If there is air to the right and down of us
         else if (j < screenSize - 1 &&
                  (data[i + 1][j + 1].material == AIR || isFluid(data[i + 1][j + 1].material)) &&
                  data[i + 1][j].material != AIR)
         {
-            data[i][j].material = data[i + 1][j + 1].material;
-            data[i][j].color = Cell::GetColorForMaterial(data[i + 1][j + 1].material);
-            data[i][j].last_updated = currTick;
+            Cell temp = data[i][j];
 
-            data[i + 1][j + 1].material = SAND;
-            data[i + 1][j + 1].color = Cell::GetColorForMaterial(SAND);
-            data[i + 1][j + 1].last_updated = currTick;
+            data[i][j].SetMaterial(data[i + 1][j + 1].material, data[i + 1][j + 1].color, currTick);
+            data[i][j].SetMaterial(temp.material, temp.color, currTick);
         }
         // If there is air to the left and down of us
         else if (j > 0 &&
                  (data[i + 1][j - 1].material == AIR || isFluid(data[i + 1][j - 1].material)) &&
                  data[i + 1][j].material != AIR)
         {
-            data[i][j].material = data[i + 1][j - 1].material;
-            data[i][j].color = Cell::GetColorForMaterial(data[i + 1][j - 1].material);
-            data[i][j].last_updated = currTick;
+            Cell temp = data[i][j];
 
-            data[i + 1][j - 1].material = SAND;
-            data[i + 1][j - 1].color = Cell::GetColorForMaterial(SAND);
-            data[i + 1][j - 1].last_updated = currTick;
+            data[i][j].SetMaterial(data[i + 1][j - 1].material, data[i + 1][j - 1].color, currTick);
+            data[i + 1][j - 1].SetMaterial(temp.material, temp.color, currTick);
         }
     }
 }

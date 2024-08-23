@@ -56,16 +56,18 @@ struct Cell
     }
 
     // TODO: Use these
-    void SetMaterial(Material m)
+    void SetMaterial(Material m, int currTick)
     {
         material = m;                   // Set the material
         color = GetColorForMaterial(m); // Set the corresponding color
+        last_updated = currTick;
     }
 
-    void SetMaterial(Material m, sf::Color c)
+    void SetMaterial(Material m, sf::Color c, int currTick)
     {
         material = m;
         color = c;
+        last_updated = currTick;
     }
 };
 
