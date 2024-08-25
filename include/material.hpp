@@ -50,7 +50,9 @@ struct Cell
                 return sf::Color(232, 181, 114);
             return sf::Color(210, 134, 34);
         case FIRE:
-            return sf::Color(163, 33, 33);
+            if (RandomManager::Instance().GetRandom() < 0.5)
+                return sf::Color(163, 33, 33);
+            return sf::Color(138, 18, 18);
         case STEAM:
             return sf::Color(224, 224, 224);
         case AIR:

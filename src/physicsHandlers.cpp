@@ -132,13 +132,12 @@ void handleSandCell(Cell **data, int screenSize, int i, int j, int currTick)
     }
 }
 
-void handleFireCell(Cell **data, int screenSize, int i, int j)
+void handleFireCell(Cell **data, int screenSize, int i, int j, int currTick)
 {
     // Remove "energy" from the current fire cell
     if (data[i][j].fluid_level == 0)
     {
-        data[i][j].material = AIR;
-        data[i][j].color = Cell::GetColorForMaterial(AIR);
+        data[i][j].SetMaterial(AIR, currTick);
     }
     else
     {
@@ -150,15 +149,13 @@ void handleFireCell(Cell **data, int screenSize, int i, int j)
     {
         if (data[i + 1][j].material == GASOLINE && RandomManager::Instance().GetRandom() > 0.5)
         {
-            data[i + 1][j].material = FIRE;
-            data[i + 1][j].color = Cell::GetColorForMaterial(FIRE);
+            data[i + 1][j].SetMaterial(FIRE, currTick);
             data[i + 1][j].fluid_level = 9;
         }
 
         if (data[i + 1][j].material == WATER && RandomManager::Instance().GetRandom() > 0.5)
         {
-            data[i + 1][j].material = STEAM;
-            data[i + 1][j].color = Cell::GetColorForMaterial(STEAM);
+            data[i + 1][j].SetMaterial(STEAM, currTick);
         }
     }
 
@@ -167,15 +164,13 @@ void handleFireCell(Cell **data, int screenSize, int i, int j)
     {
         if (data[i - 1][j].material == GASOLINE && RandomManager::Instance().GetRandom() > 0.5)
         {
-            data[i - 1][j].material = FIRE;
-            data[i - 1][j].color = Cell::GetColorForMaterial(FIRE);
+            data[i - 1][j].SetMaterial(FIRE, currTick);
             data[i - 1][j].fluid_level = 9;
         }
 
         if (data[i - 1][j].material == WATER && RandomManager::Instance().GetRandom() > 0.5)
         {
-            data[i - 1][j].material = STEAM;
-            data[i - 1][j].color = Cell::GetColorForMaterial(STEAM);
+            data[i - 1][j].SetMaterial(STEAM, currTick);
         }
     }
 
@@ -184,15 +179,13 @@ void handleFireCell(Cell **data, int screenSize, int i, int j)
     {
         if (data[i][j - 1].material == GASOLINE && RandomManager::Instance().GetRandom() > 0.5)
         {
-            data[i][j - 1].material = FIRE;
-            data[i][j - 1].color = Cell::GetColorForMaterial(FIRE);
+            data[i][j - 1].SetMaterial(FIRE, currTick);
             data[i][j - 1].fluid_level = 9;
         }
 
         if (data[i][j - 1].material == WATER && RandomManager::Instance().GetRandom() > 0.5)
         {
-            data[i][j - 1].material = STEAM;
-            data[i][j - 1].color = Cell::GetColorForMaterial(STEAM);
+            data[i][j - 1].SetMaterial(STEAM, currTick);
         }
     }
 
@@ -201,15 +194,13 @@ void handleFireCell(Cell **data, int screenSize, int i, int j)
     {
         if (data[i][j + 1].material == GASOLINE && RandomManager::Instance().GetRandom() > 0.5)
         {
-            data[i][j + 1].material = FIRE;
-            data[i][j + 1].color = Cell::GetColorForMaterial(FIRE);
+            data[i][j + 1].SetMaterial(FIRE, currTick);
             data[i][j + 1].fluid_level = 9;
         }
 
         if (data[i][j + 1].material == WATER && RandomManager::Instance().GetRandom() > 0.5)
         {
-            data[i][j + 1].material = STEAM;
-            data[i][j + 1].color = Cell::GetColorForMaterial(STEAM);
+            data[i][j + 1].SetMaterial(STEAM, currTick);
         }
     }
 }
@@ -281,7 +272,7 @@ void updateData(Cell **data, int screenSize, int currTick)
                 handleSandCell(data, screenSize, i, j, currTick);
                 break;
             case FIRE:
-                handleFireCell(data, screenSize, i, j);
+                handleFireCell(data, screenSize, i, j, currTick);
                 break;
             case STEAM:
                 handleSteamCell(data, screenSize, i, j, currTick);
