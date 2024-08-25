@@ -114,14 +114,14 @@ int main()
         // Clear the window and draw everything over
         window.clear();
 
-        sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
-
         for (int i = 0; i < SCREEN_SIZE; ++i)
         {
             for (int j = 0; j < SCREEN_SIZE; ++j)
             {
                 if (data[i][j].material == AIR)
                     continue;
+
+                sf::RectangleShape shape(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
 
                 shape.setFillColor(data[i][j].color);
                 shape.setPosition(sf::Vector2f(PIXEL_SIZE * j, PIXEL_SIZE * i));
