@@ -27,7 +27,7 @@ int main()
         sf::VideoMode(PIXEL_SIZE * SCREEN_SIZE, PIXEL_SIZE * SCREEN_SIZE),
         "Sandbox");
 
-    window.setFramerateLimit(60);
+    window.setFramerateLimit(120);
 
     // Dynamic allocation of a 2D array (matrix)
     Cell **data = new Cell *[SCREEN_SIZE];
@@ -56,7 +56,7 @@ int main()
 
         // Set the window title with the current FPS
         std::ostringstream title;
-        title << "Sandbox - FPS: " << fps;
+        title << "SFML Sandbox - FPS: " << fps;
         window.setTitle(title.str());
 
         // Poll all events on this tick

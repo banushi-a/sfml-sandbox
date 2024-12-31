@@ -40,8 +40,12 @@ struct Cell
         switch (m)
         {
         case WATER:
+            if (RandomManager::Instance().GetRandom() < 0.5)
+                return sf::Color(30, 192, 255);
             return sf::Color(30, 192, 232);
         case GASOLINE:
+            if (RandomManager::Instance().GetRandom() < 0.5)
+                return sf::Color(100, 100, 100);
             return sf::Color(89, 89, 89);
         case BRICK:
             return sf::Color(77, 26, 30);
